@@ -1,0 +1,51 @@
+package com.hadooptest;
+
+import org.apache.hadoop.conf.*;
+import org.apache.hadoop.fs.*;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IOUtils;
+
+import java.net.URI;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+public class Upload_file {          //上传文件
+    public static void main( String[] args ) throws Exception {
+        BasicConfigurator.configure();
+        Configuration conf = new Configuration();
+        //配置NameNode的地址
+        URI uri = new URI("hdfs://192.168.20.130:8020");
+        //指定用户名，获取FileSystem对象
+        FileSystem fs = FileSystem.get(uri,conf,"hadoop");
+
+        //方法一：采用FileSystem类自带的copyFromLocalFile接口上传文件
+        //本地文件
+        Path src = new Path("F:\\大数据VIP课程\\第05章-MapReduce\\sales.csv");
+        //HDFS File
+        Path dst = new Path("/17034460218/");
+        fs.copyFromLocalFile(src,dst);
+
+        fs.close();
+
+        /*方法二：采用流拷贝的方式上传文件
+        //构造一个输入流
+        InputStream is = new FileInputStream("F:\\Pycharm\\Python3.7\\123.txt");
+        //得到一个输出流
+        OutputStream os = new fs.create(new Path("/mydir/test.txt"));
+        //使用工具类实现复制
+        IOUtils.copyBytes(is,os,1024);
+        //关闭流
+        is.close();
+        os.close();
+        fs.close();
+        */
+
+        System.out.println("上传文件成功!");
+        System.out.println( "Hello World!" );
+        System.out.println("愿在湘安好!");
+    }
+}
